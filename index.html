@@ -3,36 +3,439 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>satbom's Blog</title>
+    <meta name="description" content="satbom's Network Technology Blog - Sharing knowledge about networking, security, and systems">
+    <title>satbom's Tech Blog | 网络技术博客</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #06b6d4;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --code-bg: #1e293b;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
-        header { text-align: center; padding: 3rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 2rem; border-radius: 10px; }
-        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .subtitle { opacity: 0.9; font-size: 1.1rem; }
-        .post { background: white; padding: 2rem; margin-bottom: 1.5rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .post h2 { color: #667eea; margin-bottom: 1rem; }
-        .meta { color: #888; font-size: 0.9rem; margin-bottom: 1rem; }
-        footer { text-align: center; padding: 2rem; color: #888; }
+        
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e3a5f 100%);
+            color: white;
+            padding: 2.5rem 0;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .site-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .site-title .icon { font-size: 2.2rem; }
+
+        .site-subtitle {
+            opacity: 0.85;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 55px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+        }
+
+        /* Articles */
+        .articles-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .article-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .article-excerpt {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .article-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .tag.network { background: linear-gradient(135deg, #2563eb, #06b6d4); }
+        .tag.security { background: linear-gradient(135deg, #dc2626, #f59e0b); }
+        .tag.linux { background: linear-gradient(135deg, #f59e0b, #eab308); }
+        .tag.devops { background: linear-gradient(135deg, #10b981, #06b6d4); }
+        .tag.tutorial { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
+
+        /* Sidebar */
+        aside {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-widget {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-list li:last-child {
+            border-bottom: none;
+        }
+
+        .category-count {
+            background: var(--bg);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .about-text {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* Code Block Style Preview */
+        .code-preview {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            
+            aside {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-content, .nav-content, main {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .site-title {
+                font-size: 1.5rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🦞 satbom's Blog</h1>
-            <p class="subtitle">Welcome to my personal space</p>
-        </header>
-        
-        <article class="post">
-            <h2>🎉 Hello World!</h2>
-            <p class="meta">📅 May 5, 2026</p>
-            <p>Welcome to my new blog! This is the first post. Stay tuned for more content.</p>
-        </article>
-        
-        <footer>
-            <p>Powered by GitHub Pages | © 2026 satbom</p>
-        </footer>
-    </div>
+    <header>
+        <div class="header-content">
+            <div class="site-title">
+                <span class="icon">🌐</span>
+                <span>satbom's Tech Blog</span>
+            </div>
+            <p class="site-subtitle">网络技术 · 系统运维 · 安全研究 · 开发实践</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-content">
+            <ul class="nav-links">
+                <li><a href="#">📚 首页</a></li>
+                <li><a="#">📝 文章</a></li>
+                <li><a="#">🏷️ 标签</a></li>
+                <li><a="#">📖 归档</a></li>
+                <li><a="#">👤 关于</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="articles-section">
+            <h2>📌 最新文章</h2>
+            
+            <article class="article-card">
+                <div class="article-meta">
+                    <span>📅 2026-05-05</span>
+                    <span>👁️ 阅读</span>
+                    <span>💬 评论</span>
+                </div>
+                <h3 class="article-title">🎉 欢迎来到 satbom 的技术博客</h3>
+                <p class="article-excerpt">
+                    这是一个专注于网络技术、系统运维、安全研究和开发实践的技术博客。
+                    在这里，我会分享实际工作中的经验、技术问题的解决方案，以及各种实用教程。
+                    期待与你一起探索技术的深度与广度！
+                </p>
+                <div class="article-tags">
+                    <span class="tag tutorial">入门</span>
+                    <span class="tag network">网络</span>
+                </div>
+                <div class="code-preview">
+                    <code># 博客已就绪，准备发布技术文章...</code>
+                </div>
+            </article>
+
+            <!-- More articles will be added here -->
+            
+        </section>
+
+        <aside>
+            <div class="sidebar-widget">
+                <h3 class="widget-title">👨‍💻 关于博主</h3>
+                <p class="about-text">
+                    网络技术爱好者，专注于网络协议、系统运维和安全研究。
+                    喜欢折腾各种开源项目，乐于分享技术经验。
+                </p>
+                <div class="social-links">
+                    <a href="https://github.com/vpn-404" title="GitHub">🐙</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="Email">📧</a>
+                </div>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3 class="widget-title">📂 技术分类</h3>
+                <ul class="category-list">
+                    <li>
+                        <span>🌐 网络技术</span>
+                        <span class="category-count">0</span>
+                    </li>
+                    <li>
+                        <span>🔒 网络安全</span>
+                        <span class="category-count">0</span>
+                    </li>
+                    <li>
+                        <span>🐧 Linux/Unix</span>
+                        <span class="category-count">0</span>
+                    </li>
+                    <li>
+                        <span>⚙️ 系统运维</span>
+                        <span class="category-count">0</span>
+                    </li>
+                    <li>
+                        <span>🚀 DevOps</span>
+                        <span class="category-count">0</span>
+                    </li>
+                    <li>
+                        <span>📝 教程指南</span>
+                        <span class="category-count">1</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3 class="widget-title">🏷️ 热门标签</h3>
+                <div class="article-tags">
+                    <span class="tag network">TCP/IP</span>
+                    <span class="tag network">路由</span>
+                    <span class="tag network">交换</span>
+                    <span class="tag security">防火墙</span>
+                    <span class="tag security">渗透测试</span>
+                    <span class="tag linux">Shell</span>
+                    <span class="tag linux">系统调优</span>
+                    <span class="tag devops">Docker</span>
+                    <span class="tag devops">K8s</span>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <p>© 2026 satbom's Tech Blog | Powered by GitHub Pages</p>
+        <p style="margin-top: 0.5rem; opacity: 0.6;">Built with ❤️ for the tech community</p>
+    </footer>
 </body>
 </html>
